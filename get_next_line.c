@@ -27,8 +27,6 @@ char    *append(char *s1, char *s2, int len)
         appended[i] = s1[i];
         i++;
     }
-    if (s1)
-        free(s1);
     while (i - s1_len < len)
     {
         appended[i] = s2[i - s1_len];
@@ -46,7 +44,6 @@ char    *get_next_line(int fd)
 	char		*tmp_free;
 	int			i;
 
-    
     if (tmp)
     {
         i = 0;
@@ -95,10 +92,12 @@ int		main(int argc, char **argv)
 	// ret = 1;
 	if (argc > 1)
 		fd = open(argv[1], O_RDONLY);
-	while (fd)
+	while ((line = get_next_line(fd)))
     {
-		printf("line = |%s|\n", (line = get_next_line(fd)));
-        free(line);
+		printf("line = |%s|\n", line);
     }
+    free(line);
+    // fd = 0;
+    // free(get_next_line(fd));
 	return (0);
 }
